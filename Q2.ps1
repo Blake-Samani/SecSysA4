@@ -1,0 +1,3 @@
+﻿#this script puts 100 largest exe files into a csv file with name, path, size, last write time, and 3 hashes
+
+Get-ChildItem -Path C:\ -Include *.EXE* -Recurse -Force -File | Sort-Object Length | Select-Object -Property Name, FullName, Length, LastWriteTime,@{name="HashMD5";expression={(Get-FileHash $_.FullName -Algorithm MD5).hash}},@{name="HashSHA1";expression={(Get-FileHash $_.FullName -Algorithm SHA1).hash}},@{name="HashSHA512";expression={(Get-FileHash $_.FullName -Algorithm SHA512).hash}} -Last 100 | Export-Csv -Path .\LARGEST.CSV
